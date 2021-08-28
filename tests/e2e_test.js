@@ -87,6 +87,7 @@ describe("Automation Practice Smoke Test", () => {
 
     it("Pay for selected Product", async function(){
 
+        await page.waitForTimeout(1000)
         // Click on the "Proceed to checkout" button
         await helpers.click(page,'.button-container > a > span')
 
@@ -94,7 +95,8 @@ describe("Automation Practice Smoke Test", () => {
         await helpers.click(page,'.cart_navigation.clearfix > a > span')
 
         // Add comment about your order
-        await helpers.typeText(page, 'textarea[class=form-control]', 'This is My First Puppeteer Project')
+        const orderComment = 'This is My First Puppeteer Project'
+        await helpers.typeText(page, 'textarea[class=form-control]', orderComment)
 
         // Click on the "Proceed to checkout" button on Address Page
         await helpers.click(page,'button[name=processAddress]')
