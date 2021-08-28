@@ -17,13 +17,13 @@ describe("Automation Practice Smoke Test", () => {
             devtools:false
         })
         page = await browser.newPage()
-        await page.setDefaultTimeout(60000)
-        await page.setDefaultNavigationTimeout(60000)
+        await page.setDefaultTimeout(90000)
+        await page.setDefaultNavigationTimeout(90000)
 
     })
 
     after('tearDown', async function(){
-        // await browser.close()
+        await browser.close()
     })
 
     it("Login with Valid Credentials", async function(){
@@ -32,32 +32,35 @@ describe("Automation Practice Smoke Test", () => {
         await page.goto('http://automationpractice.com/index.php')
 
         // Assert that Home Page Title is correct
-        const homeTitle = await page.title()
-        expect(homeTitle).to.be.a('string','My Store')
+        const homePageTitle = await page.title()
+        expect(homePageTitle).to.be.a('string','My Store')
 
         // Click on Login Button
         await helpers.click(page, '.login')
 
         // Assert that Login Page Title is Correct
-        const loginTitle = await page.title()
-        expect(loginTitle).to.be.a('string','Login - My Store')
+        const loginPageTitle = await page.title()
+        expect(loginPageTitle).to.be.a('string','Login - My Store')
 
         // Type an valid e-mail
-        await helpers.typeText(page, '#email','vanity.sadia@aceadd.com')
+        const userName = 'vanity.sadia@aceadd.com'
+        await helpers.typeText(page, '#email', userName)
 
         // Type a valid password
-        await helpers.typeText(page, '#passwd','vanity.sadia')
+        const password = 'vanity.sadia'
+        await helpers.typeText(page, '#passwd', password)
 
         // Click on Login Button
         await helpers.click(page, '#SubmitLogin')
 
         // Assert that Login Page Title is correct
-        const accountTitle = await page.title()
-        expect(accountTitle).to.be.a('string','My account - My Store')
+        const accountPageTitle = await page.title()
+        expect(accountPageTitle).to.be.a('string','My account - My Store')
 
         // Assert That Logined User Name is correct
-        const userName = await helpers.getText(page, '.account > span')
-        expect(userName).to.equal('vanity sadia')
+        const actualUserName = await helpers.getText(page, '.account > span')
+        const expectedUserName = 'vanity sadia'
+        expect(actualUserName).to.equal(expectedUserName)
 
         // Go to the Home Page
         await helpers.click(page, '.logo.img-responsive')
@@ -83,11 +86,9 @@ describe("Automation Practice Smoke Test", () => {
     })
 
     it("Pay for selected Product", async function(){
-        
-        // Click on the "Proceed to checkout" button span[title='Close window']
-        //await helpers.click(page,'.button-container > a > span')
 
-        await helpers.click(page,'[title=Continue shopping] span')
+        // Click on the "Proceed to checkout" button
+        await helpers.click(page,'.button-container > a > span')
 
         // Click on the "Proceed to checkout" button on Summary Page
         await helpers.click(page,'.cart_navigation.clearfix > a > span')
